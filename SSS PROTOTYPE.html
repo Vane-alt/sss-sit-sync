@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>SSS — Sit &amp; Sync Portal</title>
+  <meta name="theme-color" content="#0A2342">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+     TOKENS
+     ============================================================ */
+    :root {
+      --ink: #0D1B2E;
+      --ink-soft: #5B6A84;
+      --ink-faint: #9BAAB8;
+      --paper: #F2F5F9;
+      --surface: #FFFFFF;
+      --surface-2: #F8FAFC;
+      --brand: #1B6FD8;
+      --brand-light: #EBF3FF;
+      --brand-dark: #1458B0;
+      --accent: #F59E0B;
+      --accent-light: #FFFBEB;
+      --success: #10B981;
+      --border: rgba(0, 0, 0, 0.07);
+      --appbar-from: #0038A8;
+      --appbar-to: #003090;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --radius-pill: 999px;
+
+      --gutter: 18px;
+      --nav-height: 78px;
+
+      --e0: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --e1: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --e2: 0 8px 24px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06);
+      --e3: 0 20px 48px rgba(0, 0, 0, 0.14), 0 6px 16px rgba(0, 0, 0, 0.08);
+
+      color-scheme: light;
+    }
+
+    body.dark {
+      --ink: #E8EDF5;
+      --ink-soft: #8A97B0;
+      --ink-faint: #4A5568;
+      --paper: #080F1C;
+      --surface: #0F1A2E;
+      --surface-2: #141F33;
+      --brand: #4D9EF5;
+      --brand-light: rgba(77, 158, 245, 0.12);
+      --brand-dark: #3B8DE0;
+      --accent: #F6B633;
+      --accent-light: rgba(246, 182, 51, 0.12);
+      --success: #34D399;
+      --border: rgba(255, 255, 255, 0.07);
+      --appbar-from: #040B17;
+      --appbar-to: #080F1C;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.4s ease, color 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+     SCROLL CONTAINER
+     ============================================================ */
+    .scroll-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--nav-height) + 16px);
+      scroll-behavior: smooth;
+    }
+
+    /* ============================================================
+     TOP BAR — glassmorphism gradient
+     ============================================================ */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 20px var(--gutter) 18px;
+      background: linear-gradient(135deg, var(--appbar-from) 0%, var(--appbar-to) 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+    }
+
+    .topbar-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-box {
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+      flex-shrink: 0;
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 5px;
+    }
+
+    .brand-text .org {
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .brand-text .portal-name {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 1px;
+      letter-spacing: 0.02em;
+    }
+
+    .theme-toggle {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.9);
+    }
+
+    .theme-toggle .material-icons-round {
+      font-size: 19px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ============================================================
+     HERO / GREETING SECTION
+     ============================================================ */
+    .hero {
+      padding: 26px var(--gutter) 8px;
+      background: linear-gradient(180deg, var(--paper) 0%, var(--paper) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(27, 111, 216, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .greet {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+
+    .subline {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 6px;
+    }
+
+    .subline .dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--ink-faint);
+    }
+
+    .clock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 3px 10px 3px 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      box-shadow: var(--e0);
+    }
+
+    .clock-badge .material-icons-round {
+      font-size: 13px;
+      color: var(--brand);
+    }
+
+    /* ============================================================
+     TICKET CARD
+     ============================================================ */
+    .ticket-wrap {
+      margin: 20px var(--gutter) 4px;
+      filter: drop-shadow(0 12px 32px rgba(10, 35, 66, 0.18));
+      animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .ticket {
+      position: relative;
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      border: 1px solid var(--border);
+    }
+
+    .ticket-main {
+      padding: 24px 22px 26px;
+    }
+
+    .ticket-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brand);
+      background: var(--brand-light);
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+    }
+
+    .ticket-eyebrow .material-icons-round {
+      font-size: 12px;
+    }
+
+    .ticket-number {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 72px;
+      line-height: 1;
+      margin: 12px 0 8px;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+      animation: countPulse 2.4s ease-in-out infinite;
+    }
+
+    .ticket-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .ticket-meta .material-icons-round {
+      font-size: 15px;
+      color: var(--accent);
+    }
+
+    .ticket-stub {
+      position: relative;
+      width: 90px;
+      background: linear-gradient(160deg, var(--brand) 0%, var(--brand-dark) 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px 8px;
+    }
+
+    .ticket-stub .stub-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .ticket-stub .stub-icon .material-icons-round {
+      font-size: 22px;
+    }
+
+    .ticket-stub .stub-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      text-align: center;
+    }
+
+    .ticket::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 90px;
+      width: 0;
+      border-left: 2px dashed var(--border);
+    }
+
+    /* notch cutouts */
+    .ticket::after {
+      content: "";
+      position: absolute;
+      right: 82px;
+      top: -12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--paper);
+      box-shadow: 0 calc(100% + 14px) 0 var(--paper);
+    }
+
+    /* ============================================================
+     SECTION LABEL
+     ============================================================ */
+    .section-label {
+      margin: 28px var(--gutter) 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      border-radius: 1px;
+    }
+
+    /* ============================================================
+     ACTION GRID — brutalist style
+     ============================================================ */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 0 var(--gutter);
+    }
+
+    .action {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 16px 16px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #0038A8 0%, #1a5ac7 60%, #2a6fd4 100%);
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      outline: 2px solid #0038A8;
+      box-shadow: 5px 5px 0 #002680;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, background 0.1s ease-out;
+      animation: fadeIn 0.5s ease both;
+    }
+
+    .action::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+      opacity: 0;
+      transition: none;
+      z-index: 1;
+    }
+
+    /* white top-edge inner highlight */
+    .action::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.45);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .action:hover::before {
+      opacity: 1;
+      animation: brutalistShimmer 1.8s infinite;
+    }
+
+    .action:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 9px 9px 0 #002680;
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .action:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0 0 0 #002680;
+      background: #002680;
+      color: #fff;
+    }
+
+    .action:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    .action:nth-child(2) {
+      animation-delay: 0.10s;
+    }
+
+    .action:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+
+    .action:nth-child(4) {
+      animation-delay: 0.20s;
+    }
+
+    .action .icon-badge {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 1;
+      transition: transform 0.2s ease-out;
+    }
+
+    .action:hover .icon-badge {
+      transform: rotate(-8deg) scale(1.1);
+    }
+
+    .action:active .icon-badge {
+      transform: rotate(8deg) scale(0.9);
+    }
+
+    .action .icon-badge .material-icons-round {
+      font-size: 21px;
+      color: #fff;
+      transition: color 0.1s ease;
+    }
+
+    .action:active .icon-badge .material-icons-round {
+      color: #fff;
+    }
+
+    .action .label {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.92);
+      position: relative;
+      z-index: 1;
+      transition: transform 0.2s ease-out, color 0.1s ease;
+    }
+
+    .action:hover .label {
+      transform: skew(-4deg);
+      color: #fff;
+    }
+
+    .action:active .label {
+      transform: skew(4deg);
+      color: #fff;
+    }
+
+    .action .desc {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+      margin-top: -8px;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+      transition: color 0.1s ease;
+    }
+
+    .action:active .desc {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .action .arrow {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.25);
+      transition: color 0.2s ease, transform 0.2s ease;
+      z-index: 1;
+    }
+
+    .action:hover .arrow {
+      color: rgba(255, 255, 255, 0.8);
+      transform: translate(2px, -2px);
+    }
+
+    .action:active .arrow {
+      color: #fff;
+    }
+
+    @keyframes brutalistShimmer {
+      0% {
+        left: -100%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    /* ============================================================
+     BOTTOM NAV
+     ============================================================ */
+    .nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--nav-height);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 30;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-faint);
+      cursor: pointer;
+      width: 72px;
+      padding: 8px 0;
+      border-radius: var(--radius-md);
+      position: relative;
+      transition: color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-item .material-icons-round {
+      font-size: 24px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-item.is-active {
+      color: var(--brand);
+    }
+
+    .nav-item.is-active .material-icons-round {
+      transform: translateY(-2px) scale(1.1);
+    }
+
+    .nav-item.is-active::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 3px;
+      background: var(--brand);
+      border-radius: var(--radius-pill);
+      animation: dotIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    /* ============================================================
+     STATUS STRIP
+     ============================================================ */
+    .status-strip {
+      margin: 8px var(--gutter) 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--e0);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status-text {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      flex: 1;
+    }
+
+    .status-text strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+     ANIMATIONS
+     ============================================================ */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes countPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.75;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+      }
+
+      50% {
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+      }
+    }
+
+    @keyframes dotIn {
+      from {
+        width: 0;
+        opacity: 0;
+      }
+
+      to {
+        width: 20px;
+        opacity: 1;
+      }
+    }
+
+    /* ============================================================
+     TRANSITION OVERLAY (navigation + refresh)
+     ============================================================ */
+    #nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    #nav-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #nav-overlay .overlay-anim {
+      width: 120px;
+      height: 120px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(160deg, #0038A8 0%, #003090 60%, #0038A8 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #splash.hidden {
+      opacity: 0;
+      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    #splash .splash-lottie {
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #splash .splash-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #splash .splash-logo .logo-pill {
+      width: 72px;
+      height: 72px;
+      background: #ffffff;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    }
+
+    #splash .splash-logo .logo-pill img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+    }
+
+    #splash .splash-org {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    #splash .splash-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 22px;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    #splash .splash-tagline {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.45);
+      letter-spacing: 0.02em;
+    }
+
+    #splash .splash-bar-wrap {
+      width: 160px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    #splash .splash-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #F59E0B, #FBBF24);
+      border-radius: 99px;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOTTIE WEB — simpler API, no custom element race condition -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+  <!-- SPLASH SCREEN — first in body so it renders before anything else -->
+  <div id="splash" role="status" aria-label="Loading">
+    <div class="splash-lottie">
+      <div id="lottie-container" style="width:200px;height:200px"></div>
+    </div>
+    <div class="splash-logo">
+      <div class="logo-pill"><img src="sss.png" alt="SSS Logo"></div>
+      <div class="splash-org">Social Security System</div>
+      <div class="splash-name">Sit &amp; Sync</div>
+      <div class="splash-tagline">Queue · Forms · Status</div>
+    </div>
+    <div class="splash-bar-wrap">
+      <div class="splash-bar" id="splash-bar"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var animData = { "v": "4.8.0", "meta": { "g": "LottieFiles AE 3.6.0", "a": "", "k": "", "d": "", "tc": "" }, "fr": 60, "ip": 181, "op": 391, "w": 700, "h": 700, "nm": "Goodwin Loader 5", "ddd": 0, "assets": [{ "id": "comp_0", "layers": [{ "ddd": 0, "ind": 1, "ty": 0, "nm": "Goodwin Loader 4", "refId": "comp_1", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 0, "k": 0, "ix": 10 }, "p": { "a": 0, "k": [540, 250, 0], "ix": 2 }, "a": { "a": 0, "k": [540, 250, 0], "ix": 1 }, "s": { "a": 0, "k": [100, -100, 100], "ix": 6 } }, "ao": 0, "w": 1080, "h": 500, "ip": 245, "op": 490, "st": 245, "bm": 0 }, { "ddd": 0, "ind": 2, "ty": 0, "nm": "Goodwin Loader 4", "refId": "comp_1", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 0, "k": 0, "ix": 10 }, "p": { "a": 0, "k": [540, 250, 0], "ix": 2 }, "a": { "a": 0, "k": [540, 250, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100, 100], "ix": 6 } }, "ao": 0, "w": 1080, "h": 500, "ip": 0, "op": 245, "st": 0, "bm": 0 }] }, { "id": "comp_1", "layers": [{ "ddd": 0, "ind": 1, "ty": 0, "nm": "Main Star", "refId": "comp_2", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 0, "k": 0, "ix": 10 }, "p": { "a": 0, "k": [540, 250, 0], "ix": 2 }, "a": { "a": 0, "k": [150, 150, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100, 100], "ix": 6 } }, "ao": 0, "w": 300, "h": 300, "ip": 0, "op": 245, "st": -9, "bm": 0 }, { "ddd": 0, "ind": 2, "ty": 0, "nm": "Main Star", "parent": 12, "refId": "comp_2", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 0, "k": 0, "ix": 10 }, "p": { "s": true, "x": { "a": 1, "k": [{ "i": { "x": [0.453], "y": [1] }, "o": { "x": [0.314], "y": [0] }, "t": 0, "s": [8] }, { "i": { "x": [0.583], "y": [1] }, "o": { "x": [0.167], "y": [0] }, "t": 50, "s": [-192] }, { "i": { "x": [0.749], "y": [1] }, "o": { "x": [0.477], "y": [0] }, "t": 194, "s": [-192] }, { "t": 214, "s": [8] }], "ix": 3 }, "y": { "a": 0, "k": -10, "ix": 4 } }, "a": { "a": 0, "k": [150, 150, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100, 100], "ix": 6 } }, "ao": 0, "w": 300, "h": 300, "ip": 0, "op": 245, "st": 0, "bm": 0 }, { "ddd": 0, "ind": 3, "ty": 0, "nm": "Main Star", "parent": 11, "refId": "comp_2", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 0, "k": 0, "ix": 10 }, "p": { "s": true, "x": { "a": 1, "k": [{ "i": { "x": [0.453], "y": [1] }, "o": { "x": [0.314], "y": [0] }, "t": 0, "s": [8] }, { "i": { "x": [0.583], "y": [1] }, "o": { "x": [0.167], "y": [0] }, "t": 50, "s": [208] }, { "i": { "x": [0.749], "y": [1] }, "o": { "x": [0.477], "y": [0] }, "t": 194, "s": [208] }, { "t": 214, "s": [8] }], "ix": 3 }, "y": { "a": 0, "k": -10, "ix": 4 } }, "a": { "a": 0, "k": [150, 150, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100, 100], "ix": 6 } }, "ao": 0, "w": 300, "h": 300, "ip": 0, "op": 245, "st": 0, "bm": 0 }, { "ddd": 0, "ind": 11, "ty": 3, "nm": "Rotate 2", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 1, "k": [{ "i": { "x": [0], "y": [1] }, "o": { "x": [0.493], "y": [0] }, "t": 31, "s": [0] }, { "t": 191, "s": [-180], "h": 1 }], "ix": 10 }, "p": { "a": 0, "k": [540, 250, 0], "ix": 2 }, "a": { "a": 0, "k": [8, -10, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "i": { "x": [0.221, 0.221, 0.667], "y": [1, 1, 1] }, "o": { "x": [1, 1, 0.333], "y": [0, 0, 0] }, "t": 31, "s": [100, 100, 100] }, { "i": { "x": [0.385, 0.385, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.504, 0.504, 0.333], "y": [0, 0, 0] }, "t": 108.104, "s": [63, 63, 100] }, { "t": 203, "s": [100, 100, 100], "h": 1 }], "ix": 6 } }, "ao": 0, "ip": 0, "op": 245, "st": 0, "bm": 0 }, { "ddd": 0, "ind": 12, "ty": 3, "nm": "Rotate", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 1, "k": [{ "i": { "x": [0], "y": [1] }, "o": { "x": [0.493], "y": [0] }, "t": 31, "s": [0] }, { "t": 190.998046875, "s": [180], "h": 1 }], "ix": 10 }, "p": { "a": 0, "k": [540, 250, 0], "ix": 2 }, "a": { "a": 0, "k": [8, -10, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "i": { "x": [0.221, 0.221, 0.667], "y": [1, 1, 1] }, "o": { "x": [1, 1, 0.333], "y": [0, 0, 0] }, "t": 31, "s": [100, 100, 100] }, { "i": { "x": [0.385, 0.385, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.504, 0.504, 0.333], "y": [0, 0, 0] }, "t": 108.104, "s": [63, 63, 100] }, { "t": 203, "s": [100, 100, 100], "h": 1 }], "ix": 6 } }, "ao": 0, "ip": 0, "op": 245, "st": 0, "bm": 0 }] }, { "id": "comp_2", "layers": [{ "ddd": 0, "ind": 2, "ty": 4, "nm": "Main Star", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 1, "k": [{ "i": { "x": [0.447], "y": [1] }, "o": { "x": [0.571], "y": [0] }, "t": 15, "s": [-180] }, { "i": { "x": [0.456], "y": [1] }, "o": { "x": [0.53], "y": [0] }, "t": 107.469, "s": [0] }, { "t": 219, "s": [180] }], "ix": 10 }, "p": { "s": true, "x": { "a": 0, "k": 150.283, "ix": 3 }, "y": { "a": 0, "k": 150, "ix": 4 } }, "a": { "a": 0, "k": [162.667, 191.667, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "i": { "x": [0.22, 0.22, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.659, 0.659, 0.333], "y": [0, 0, 0] }, "t": 10, "s": [100, 100, 100] }, { "i": { "x": [0.333, 0.333, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.577, 0.577, 0.333], "y": [0, 0, 0] }, "t": 53, "s": [80, 80, 100] }, { "i": { "x": [0.342, 0.342, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.571, 0.571, 0.333], "y": [0, 0, 0] }, "t": 108, "s": [130, 130, 100] }, { "i": { "x": [0.358, 0.358, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.559, 0.559, 0.333], "y": [0, 0, 0] }, "t": 164.531, "s": [80, 80, 100] }, { "t": 225, "s": [100, 100, 100] }], "ix": 6 } }, "ao": 0, "shapes": [{ "ty": "gr", "it": [{ "ind": 0, "ty": "sh", "ix": 1, "ks": { "a": 0, "k": { "i": [[-12.343, 29.44], [-29.44, -12.343], [12.343, -29.44], [29.44, 12.343]], "o": [[12.343, 29.363], [-29.363, 12.343], [-12.343, -29.363], [29.363, -12.343]], "v": [[0, -97.167], [65.167, -32], [0, 33.167], [-65.167, -32]], "c": true }, "ix": 2 }, "nm": "Path 1", "mn": "ADBE Vector Shape - Group", "hd": false }, { "ty": "fl", "c": { "a": 1, "k": [{ "i": { "x": [0.833], "y": [0.833] }, "o": { "x": [0.167], "y": [0.167] }, "t": 5, "s": [0.1848, 0.3687, 0.4752, 1] }, { "i": { "x": [0.833], "y": [0.833] }, "o": { "x": [0.167], "y": [0.167] }, "t": 108, "s": [0, 0.5725, 0.8941, 1] }, { "t": 228, "s": [0.1848, 0.3687, 0.4752, 1] }], "ix": 4 }, "o": { "a": 0, "k": 100, "ix": 5 }, "r": 1, "bm": 0, "nm": "Fill 1", "mn": "ADBE Vector Graphic - Fill", "hd": false }, { "ty": "tr", "p": { "a": 0, "k": [162.667, 223.667], "ix": 2 }, "a": { "a": 0, "k": [0, 0], "ix": 1 }, "s": { "a": 0, "k": [100, 100], "ix": 3 }, "r": { "a": 0, "k": 0, "ix": 6 }, "o": { "a": 0, "k": 100, "ix": 7 }, "sk": { "a": 0, "k": 0, "ix": 4 }, "sa": { "a": 0, "k": 0, "ix": 5 }, "nm": "Transform" }], "nm": "Group 1", "np": 2, "cix": 2, "bm": 0, "ix": 1, "mn": "ADBE Vector Group", "hd": false }], "ip": 0, "op": 920, "st": 0, "bm": 0 }] }], "layers": [{ "ddd": 0, "ind": 1, "ty": 0, "nm": "Sub star loaders", "refId": "comp_0", "sr": 1, "ks": { "o": { "a": 0, "k": 100, "ix": 11 }, "r": { "a": 1, "k": [{ "i": { "x": [0], "y": [1] }, "o": { "x": [0.559], "y": [0] }, "t": 0, "s": [-180] }, { "i": { "x": [0.028], "y": [1] }, "o": { "x": [0.333], "y": [0] }, "t": 78, "s": [0] }, { "i": { "x": [0], "y": [1] }, "o": { "x": [0.559], "y": [0] }, "t": 227, "s": [0] }, { "i": { "x": [0.362], "y": [1] }, "o": { "x": [0.167], "y": [0] }, "t": 305, "s": [-180] }, { "i": { "x": [0.205], "y": [1] }, "o": { "x": [0.344], "y": [0] }, "t": 330, "s": [-180] }, { "t": 390, "s": [-270] }], "ix": 10 }, "p": { "a": 0, "k": [350, 350, 0], "ix": 2 }, "a": { "a": 0, "k": [540, 250, 0], "ix": 1 }, "s": { "a": 1, "k": [{ "i": { "x": [0, 0, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.338, 0.338, 0.333], "y": [0, 0, 0] }, "t": 181, "s": [250, 250, 100] }, { "i": { "x": [0.564, 0.564, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] }, "t": 221, "s": [100, 100, 100] }, { "i": { "x": [0, 0, 0.667], "y": [1, 1, 1] }, "o": { "x": [0.431, 0.431, 0.333], "y": [0, 0, 0] }, "t": 340, "s": [100, 100, 100] }, { "t": 380, "s": [250, 250, 100] }], "ix": 6 } }, "ao": 0, "tm": { "a": 1, "k": [{ "i": { "x": [0.833], "y": [0.833] }, "o": { "x": [0.167], "y": [0.167] }, "t": 0, "s": [0] }, { "i": { "x": [0.833], "y": [0.833] }, "o": { "x": [0.167], "y": [0.167] }, "t": 370, "s": [8.133] }, { "i": { "x": [0.833], "y": [0.833] }, "o": { "x": [0.167], "y": [0.167] }, "t": 1070, "s": [8.133] }, { "t": 1840, "s": [30.667] }], "ix": 2 }, "w": 1080, "h": 500, "ip": 0, "op": 1840, "st": 0, "bm": 0 }], "markers": [] };
+
+      /* lottie-web is already loaded — call directly, no race condition */
+      window.__starAnimData = animData;
+
+      /* ── Only show splash on first visit, not on refresh ── */
+      var splashEl = document.getElementById('splash');
+      var alreadySeen = sessionStorage.getItem('sss_splash_seen');
+
+      if (alreadySeen) {
+        /* Skip splash — remove it instantly */
+        splashEl.remove();
+      } else {
+        /* First visit — play splash then mark as seen */
+        sessionStorage.setItem('sss_splash_seen', '1');
+
+        lottie.loadAnimation({
+          container: document.getElementById('lottie-container'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: animData
+        });
+
+        var MIN_MS = 3000, start = performance.now(), progress = 0;
+        var bar = document.getElementById('splash-bar');
+        var barTimer = setInterval(function () {
+          progress = Math.min(progress + (100 / (MIN_MS / 80)), 92);
+          bar.style.width = progress + '%';
+          if (progress >= 92) clearInterval(barTimer);
+        }, 80);
+
+        function dismiss() {
+          var delay = Math.max(0, MIN_MS - (performance.now() - start));
+          setTimeout(function () {
+            bar.style.width = '100%';
+            setTimeout(function () {
+              splashEl.classList.add('hidden');
+              setTimeout(function () { splashEl.remove(); }, 600);
+            }, 200);
+          }, delay);
+        }
+        if (document.readyState === 'complete') dismiss();
+        else window.addEventListener('load', dismiss, { once: true });
+      }
+    })();
+  </script>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-content">
+      <div class="logo-area">
+        <div class="logo-box">
+          <img src="sss.png" alt="SSS Logo">
+        </div>
+        <div class="brand-text">
+          <div class="org">Social Security System</div>
+          <div class="portal-name">Sit &amp; Sync Portal</div>
+        </div>
+      </div>
+      <div class="theme-toggle" role="button" tabindex="0" aria-label="Toggle dark mode" onclick="toggleDark()">
+        <span class="material-icons-round" id="theme-icon">dark_mode</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="scroll-container">
+
+    <!-- HERO / GREETING -->
+    <div class="hero">
+      <h1 class="greet" id="greet">Good afternoon</h1>
+      <div class="subline">
+        <div class="clock-badge">
+          <span class="material-icons-round">schedule</span>
+          <span id="clock">--:--:--</span>
+        </div>
+        <span class="dot"></span>
+        <div class="clock-badge">
+          <span class="material-icons-round">calendar_today</span>
+          <span id="clock">June 28, 2026</span>
+        </div>
+        <span class="dot"></span>
+        <span>Branch: <strong style="color:var(--ink);font-weight:600;">Ilagan City</strong></span>
+      </div>
+    </div>
+
+    <!-- STATUS STRIP -->
+    <div class="status-strip">
+      <div class="status-dot"></div>
+      <div class="status-text">Queue is <strong>open</strong> · Window 3 now serving A09</div>
+      <span class="material-icons-round" style="font-size:18px;color:var(--ink-faint);">chevron_right</span>
+    </div>
+
+    <!-- TICKET CARD -->
+    <div class="ticket-wrap">
+      <div class="ticket">
+        <div class="ticket-main">
+          <div class="ticket-eyebrow">
+            <span class="material-icons-round">confirmation_number</span>
+            Now serving
+          </div>
+          <div class="ticket-number">A12</div>
+          <div class="ticket-meta">
+            <span class="material-icons-round">people</span>
+            3 people ahead · ~9 min wait
+          </div>
+        </div>
+        <div class="ticket-stub">
+          <div class="stub-icon">
+            <span class="material-icons-round">qr_code_2</span>
+          </div>
+          <span class="stub-label">Your Ticket</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="section-label">Quick actions</div>
+    <div class="grid">
+      <div class="action" role="button" tabindex="0" onclick="go('queue.html')">
+        <div class="icon-badge"><span class="material-icons-round">home</span></div>
+        <div class="label">Queue</div>
+        <div class="desc">Check your place in line</div>
+        <span class="material-icons-round arrow">north_east</span>
+      </div>
+      <div class="action" role="button" tabindex="0" onclick="go('forms.html')">
+        <div class="icon-badge"><span class="material-icons-round">description</span></div>
+        <div class="label">Forms</div>
+        <div class="desc">Fill out paperwork ahead</div>
+        <span class="material-icons-round arrow">north_east</span>
+      </div>
+      <div class="action" role="button" tabindex="0" onclick="go('tutorials.html')">
+        <div class="icon-badge"><span class="material-icons-round">play_circle</span></div>
+        <div class="label">Tutorials</div>
+        <div class="desc">Short how-to videos</div>
+        <span class="material-icons-round arrow">north_east</span>
+      </div>
+      <div class="action" role="button" tabindex="0" onclick="go('tracker.html')">
+        <div class="icon-badge"><span class="material-icons-round">track_changes</span></div>
+        <div class="label">Status</div>
+        <div class="desc">Track your request</div>
+        <span class="material-icons-round arrow">north_east</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV — powered by nav.js (edit that file to update all pages) -->
+  <div id="shared-bottom-nav"></div>
+  <script src="nav.js"></script>
+
+  <script>
+    /* ── Navigation overlay ── */
+    var overlayAnim = null;
+
+    function showOverlay() {
+      var overlay = document.getElementById('nav-overlay');
+      if (!overlay) return;
+      overlay.classList.add('show');
+      if (!overlayAnim) {
+        overlayAnim = lottie.loadAnimation({
+          container: document.getElementById('overlay-anim'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: window.__starAnimData
+        });
+      } else {
+        overlayAnim.play();
+      }
+    }
+
+    function go(page) {
+      showOverlay();
+      setTimeout(function () { window.location.href = page; }, 400);
+    }
+
+    /* Show overlay on refresh / tab close */
+    window.addEventListener('beforeunload', function () {
+      showOverlay();
+    });
+
+    function setGreeting() {
+      const h = new Date().getHours();
+      let g = 'Good evening';
+      if (h < 12) g = 'Good morning';
+      else if (h < 18) g = 'Good afternoon';
+      document.getElementById('greet').textContent = g;
+    }
+    setGreeting();
+
+    function tick() {
+      document.getElementById('clock').textContent =
+        new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    function toggleDark() {
+      const dark = document.body.classList.toggle('dark');
+      document.getElementById('theme-icon').textContent = dark ? 'light_mode' : 'dark_mode';
+      localStorage.setItem('sitSyncTheme', dark ? 'dark' : 'light');
+    }
+
+    (function initTheme() {
+      try {
+        const saved = localStorage.getItem('sitSyncTheme');
+        if (saved === 'dark') {
+          document.body.classList.add('dark');
+          document.getElementById('theme-icon').textContent = 'light_mode';
+        }
+      } catch (e) { }
+    })();
+  </script>
+
+  <!-- NAVIGATION / REFRESH OVERLAY -->
+  <div id="nav-overlay" aria-hidden="true">
+    <div id="overlay-anim" class="overlay-anim"></div>
+  </div>
+
+</body>
+
+</html>
