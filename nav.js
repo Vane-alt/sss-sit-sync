@@ -10,7 +10,7 @@
       icon: 'home',        // Material Icons name  (leave imgSrc blank to use icon)
       imgSrc: '',            // e.g. 'sss.png' — overrides icon when set
       href: 'SSS PROTOTYPE.html',
-      match: ['SSS PROTOTYPE.html', 'SSS PROTOTYPE.html', '/', '']
+      match: ['index.html', 'index.html', '/', '']
     },
     {
       label: 'SSS Portal',
