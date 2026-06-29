@@ -954,28 +954,6 @@
         else window.addEventListener('load', dismiss, { once: true });
       }
     })();
-    <script>
-    function updateCalendar() {
-        const dateElement = document.getElementById('clock');
-        
-        // Define the options for formatting
-        const options = { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric', 
-            timeZone: 'Asia/Manila' 
-        };
-        
-        // Get the formatted date string
-        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(new Date());
-        
-        // Inject into the HTML
-        dateElement.textContent = formattedDate;
-    }
-
-    // Run immediately
-    updateCalendar();
-
   </script>
 
   <!-- TOP BAR -->
@@ -1009,7 +987,7 @@
         <span class="dot"></span>
         <div class="clock-badge">
           <span class="material-icons-round">calendar_today</span>
-          <span id="clock">June 28, 2026</span>
+          <span id="calendar">Loading...</span>
         </div>
         <span class="dot"></span>
         <span>Branch: <strong style="color:var(--ink);font-weight:600;">Ilagan City</strong></span>
@@ -1143,6 +1121,27 @@
         }
       } catch (e) { }
     })();
+
+    function updateCalendar() {
+      const dateElement = document.getElementById('calendar');
+
+      // Define the options for formatting
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'Asia/Manila'
+      };
+
+      // Get the formatted date string
+      const formattedDate = new Intl.DateTimeFormat('en-US', options).format(new Date());
+
+      // Inject into the HTML
+      dateElement.textContent = formattedDate;
+    }
+
+    // Run immediately
+    updateCalendar();
   </script>
 
   <!-- NAVIGATION / REFRESH OVERLAY -->
