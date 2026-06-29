@@ -954,6 +954,28 @@
         else window.addEventListener('load', dismiss, { once: true });
       }
     })();
+    <script>
+    function updateCalendar() {
+        const dateElement = document.getElementById('clock');
+        
+        // Define the options for formatting
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric', 
+            timeZone: 'Asia/Manila' 
+        };
+        
+        // Get the formatted date string
+        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(new Date());
+        
+        // Inject into the HTML
+        dateElement.textContent = formattedDate;
+    }
+
+    // Run immediately
+    updateCalendar();
+
   </script>
 
   <!-- TOP BAR -->
