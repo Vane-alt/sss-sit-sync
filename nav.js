@@ -9,7 +9,7 @@
       label: 'Home',
       icon: 'home',        // Material Icons name  (leave imgSrc blank to use icon)
       imgSrc: '',            // e.g. 'sss.png' — overrides icon when set
-      href: 'SSS PROTOTYPE.html',
+      href: 'index.html',
       match: ['index.html', 'index.html', '/', '']
     },
     {
