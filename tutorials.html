@@ -111,104 +111,6 @@
       scroll-behavior: smooth;
     }
 
-    /* ============================================================
-     TOP BAR
-     ============================================================ */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      padding: 20px var(--gutter) 18px;
-      background: linear-gradient(135deg, var(--appbar-from) 0%, var(--appbar-to) 100%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
-    }
-
-    .topbar-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .back-btn {
-      display: grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      flex-shrink: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .back-btn:active {
-      transform: scale(0.9);
-    }
-
-    .back-btn .material-icons-round {
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .page-title {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .page-title .supertitle {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .page-title .title {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 18px;
-      color: #fff;
-      letter-spacing: -0.01em;
-    }
-
-    .theme-toggle {
-      display: grid;
-      place-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      flex-shrink: 0;
-    }
-
-    .theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .theme-toggle:active {
-      transform: scale(0.9);
-    }
-
-    .theme-toggle .material-icons-round {
-      font-size: 19px;
-      color: rgba(255, 255, 255, 0.9);
-    }
 
     /* ============================================================
      HERO BANNER
@@ -733,23 +635,16 @@
 
 <body>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div class="topbar-content">
-      <div class="topbar-left">
-        <div class="back-btn" role="button" tabindex="0" aria-label="Go back" onclick="go('SSS PROTOTYPE.html')">
-          <span class="material-icons-round">arrow_back</span>
-        </div>
-        <div class="page-title">
-          <div class="supertitle">SSS Sit &amp; Sync</div>
-          <div class="title">Tutorials</div>
-        </div>
-      </div>
-      <div class="theme-toggle" role="button" tabindex="0" aria-label="Toggle dark mode" onclick="toggleDark()">
-        <span class="material-icons-round" id="theme-icon">dark_mode</span>
-      </div>
-    </div>
-  </header>
+  <!-- TOP BAR — powered by topbar.js -->
+  <script>
+    window.TopBarConfig = {
+      mode: 'sub',
+      supertitle: 'SSS Sit & Sync',
+      title: 'Tutorials',
+      backHref: 'SSS PROTOTYPE.html'
+    };
+  </script>
+  <script src="topbar.js"></script>
 
   <div class="scroll-container">
 
@@ -1144,22 +1039,10 @@
       });
     })();
 
-    /* ── Theme ── */
+    /* ── Theme (delegated to topbar.js) ── */
     function toggleDark() {
-      const dark = document.body.classList.toggle('dark');
-      document.getElementById('theme-icon').textContent = dark ? 'light_mode' : 'dark_mode';
-      localStorage.setItem('sitSyncTheme', dark ? 'dark' : 'light');
+      if (typeof topbarToggleDark === 'function') topbarToggleDark();
     }
-
-    (function initTheme() {
-      try {
-        const saved = localStorage.getItem('sitSyncTheme');
-        if (saved === 'dark') {
-          document.body.classList.add('dark');
-          document.getElementById('theme-icon').textContent = 'light_mode';
-        }
-      } catch (e) { }
-    })();
 
     /* ── Navigation ── */
     function go(page) {
