@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Download Forms — SSS Sit &amp; Sync Portal</title>
+  <meta name="description"
+    content="Download official Social Security System (SSS) forms for membership, contributions, loans, and benefits.">
+  <meta name="theme-color" content="#0A2342">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+     TOKENS — match SSS PROTOTYPE / tutorials.html
+     ============================================================ */
+    :root {
+      --ink: #0D1B2E;
+      --ink-soft: #5B6A84;
+      --ink-faint: #9BAAB8;
+      --paper: #F2F5F9;
+      --surface: #FFFFFF;
+      --surface-2: #F8FAFC;
+      --brand: #1B6FD8;
+      --brand-light: #EBF3FF;
+      --brand-dark: #1458B0;
+      --accent: #F59E0B;
+      --accent-light: #FFFBEB;
+      --success: #10B981;
+      --danger: #EF4444;
+      --border: rgba(0, 0, 0, 0.07);
+      --appbar-from: #0038A8;
+      --appbar-to: #003090;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --radius-pill: 999px;
+
+      --gutter: 18px;
+      --nav-height: 78px;
+
+      --e0: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --e1: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --e2: 0 8px 24px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.06);
+      --e3: 0 20px 48px rgba(0, 0, 0, 0.14), 0 6px 16px rgba(0, 0, 0, 0.08);
+
+      color-scheme: light;
+    }
+
+    body.dark {
+      --ink: #E8EDF5;
+      --ink-soft: #8A97B0;
+      --ink-faint: #4A5568;
+      --paper: #080F1C;
+      --surface: #0F1A2E;
+      --surface-2: #141F33;
+      --brand: #4D9EF5;
+      --brand-light: rgba(77, 158, 245, 0.12);
+      --brand-dark: #3B8DE0;
+      --accent: #F6B633;
+      --accent-light: rgba(246, 182, 51, 0.12);
+      --success: #34D399;
+      --border: rgba(255, 255, 255, 0.07);
+      --appbar-from: #040B17;
+      --appbar-to: #080F1C;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.4s ease, color 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+     SCROLL CONTAINER
+     ============================================================ */
+    .scroll-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--nav-height) + 20px);
+      scroll-behavior: smooth;
+    }
+
+    /* ============================================================
+     HERO BANNER
+     ============================================================ */
+    .forms-hero {
+      padding: 28px var(--gutter) 24px;
+      background: linear-gradient(135deg, #0A2342 0%, #1B6FD8 50%, #0038A8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .forms-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .forms-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      left: -20px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero-badge span {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-heading {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 24px;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtext {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 18px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      border-radius: var(--radius-pill);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0d1b2e;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+    }
+
+    .hero-cta:active {
+      transform: translateY(0);
+    }
+
+    .hero-cta .material-icons-round {
+      font-size: 18px;
+    }
+
+    /* ============================================================
+     SEARCH BAR
+     ============================================================ */
+    .search-bar-container {
+      margin: 20px var(--gutter) 14px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--e0);
+      padding: 0 14px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .search-bar-container:focus-within {
+      border-color: var(--brand);
+      box-shadow: var(--e1);
+    }
+
+    .search-bar-container input {
+      flex: 1;
+      height: 48px;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--ink);
+      padding: 0 10px;
+    }
+
+    .search-bar-container input::placeholder {
+      color: var(--ink-faint);
+    }
+
+    .search-bar-container .search-icon {
+      color: var(--ink-soft);
+      font-size: 20px;
+    }
+
+    .search-bar-container .clear-icon {
+      color: var(--ink-faint);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ============================================================
+     SECTION LABEL
+     ============================================================ */
+    .section-label {
+      margin: 20px var(--gutter) 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      border-radius: 1px;
+    }
+
+    /* ============================================================
+     INFO STRIP
+     ============================================================ */
+    .info-strip {
+      margin: 0 var(--gutter) 16px;
+      background: var(--brand-light);
+      border: 1px solid rgba(27, 111, 216, 0.15);
+      border-radius: var(--radius-md);
+      padding: 13px 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .info-strip .material-icons-round {
+      font-size: 18px;
+      color: var(--brand);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .info-strip p {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .info-strip p strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+     CATEGORY CARDS / ACCORDIONS
+     ============================================================ */
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 var(--gutter);
+    }
+
+    .category-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--e1);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* Stagger entry animations */
+    .category-card:nth-child(1) { animation-delay: 0.05s; }
+    .category-card:nth-child(2) { animation-delay: 0.10s; }
+    .category-card:nth-child(3) { animation-delay: 0.15s; }
+    .category-card:nth-child(4) { animation-delay: 0.20s; }
+    .category-card:nth-child(5) { animation-delay: 0.25s; }
+    .category-card:nth-child(6) { animation-delay: 0.30s; }
+    .category-card:nth-child(7) { animation-delay: 0.35s; }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.2s;
+    }
+
+    .category-header:hover {
+      background: var(--surface-2);
+    }
+
+    .category-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--brand-light);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: var(--brand);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .category-icon-box .material-icons-round {
+      font-size: 22px;
+    }
+
+    .category-card.expanded .category-icon-box {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .category-title-area {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .category-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .category-meta {
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-top: 2px;
+    }
+
+    .form-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--surface-2);
+      color: var(--ink-soft);
+      border-radius: var(--radius-pill);
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: background 0.2s, color 0.2s;
+      border: 1px solid var(--border);
+    }
+
+    .category-card.expanded .form-count-badge {
+      background: var(--brand-light);
+      color: var(--brand);
+      border-color: transparent;
+    }
+
+    .category-chevron {
+      color: var(--ink-faint);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .category-chevron .material-icons-round {
+      font-size: 20px;
+    }
+
+    .category-card.expanded .category-chevron {
+      transform: rotate(180deg);
+      color: var(--brand);
+    }
+
+    .category-body {
+      display: none;
+      padding: 4px 18px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .category-card.expanded .category-body {
+      display: block;
+    }
+
+    /* ============================================================
+     FORM ROWS
+     ============================================================ */
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 0.2s ease;
+    }
+
+    .form-row:last-child {
+      border-bottom: none;
+    }
+
+    .form-icon-pdf {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: #FFEAEA;
+      color: #D32F2F;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    body.dark .form-icon-pdf {
+      background: rgba(211, 47, 47, 0.15);
+      color: #EF5350;
+    }
+
+    .form-icon-zip {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: #E8F5E9;
+      color: #2E7D32;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    body.dark .form-icon-zip {
+      background: rgba(46, 125, 50, 0.15);
+      color: #81C784;
+    }
+
+    .form-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .form-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    .form-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ink-faint);
+      margin-top: 3px;
+    }
+
+    .form-download-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--ink-soft);
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .form-download-btn:hover {
+      background: var(--brand-light);
+      color: var(--brand);
+      border-color: transparent;
+    }
+
+    .form-download-btn:active {
+      transform: scale(0.9);
+    }
+
+    .form-download-btn .material-icons-round {
+      font-size: 18px;
+    }
+
+    /* ============================================================
+     BOTTOM NAV — matching tutorials.html
+     ============================================================ */
+    .nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--nav-height);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 30;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-faint);
+      cursor: pointer;
+      width: 72px;
+      padding: 8px 0;
+      border-radius: var(--radius-md);
+      position: relative;
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-item .material-icons-round {
+      font-size: 24px;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .nav-item.is-active {
+      color: var(--brand);
+    }
+
+    .nav-item.is-active .material-icons-round {
+      transform: translateY(-2px) scale(1.1);
+    }
+
+    .nav-item.is-active::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 3px;
+      background: var(--brand);
+      border-radius: var(--radius-pill);
+      animation: dotIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    /* ============================================================
+     ANIMATIONS
+     ============================================================ */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes dotIn {
+      from {
+        width: 0;
+        opacity: 0;
+      }
+
+      to {
+        width: 20px;
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ============================================================
+     TRANSITION OVERLAY
+     ============================================================ */
+    #nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    #nav-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP BAR — powered by topbar.js -->
+  <script>
+    window.TopBarConfig = { mode: 'main' };
+  </script>
+  <script src="topbar.js"></script>
+
+  <div class="scroll-container">
+
+    <!-- HERO BANNER -->
+    <div class="forms-hero">
+      <div class="hero-badge">
+        <span>Official Download Portal</span>
+      </div>
+      <h1 class="hero-heading">SSS Forms &amp; Applications</h1>
+      <p class="hero-subtext">Download PDF files of official SSS registration forms, contribution payment records, loan applications, and benefits claims.</p>
+      <a href="https://www.sss.gov.ph/download-forms-and-electronic-applications/" target="_blank" rel="noopener" class="hero-cta" id="view-original-btn">
+        <span class="material-icons-round">open_in_new</span>
+        View Original Website
+      </a>
+    </div>
+
+    <!-- INFO STRIP -->
+    <div class="section-label">Guideline</div>
+    <div class="info-strip">
+      <span class="material-icons-round">info</span>
+      <p><strong>Note:</strong> Tap on any form category below to expand the list. Use the search bar to locate specific forms immediately by typing its title or code (e.g., <strong>E-1</strong> or <strong>Maternity</strong>).</p>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar-container">
+      <span class="material-icons-round search-icon">search</span>
+      <input type="text" id="forms-search" placeholder="Search forms by name or code..." oninput="filterForms()">
+      <span class="material-icons-round clear-icon" id="search-clear" onclick="clearSearch()" style="display:none;">close</span>
+    </div>
+
+    <!-- CATEGORIES ACCORDION LIST -->
+    <div class="section-label" id="section-categories-header">Form Categories</div>
+
+    <!-- NO RESULTS STRIP -->
+    <div id="no-results" style="display:none; text-align:center; padding: 40px var(--gutter); color: var(--ink-soft);">
+      <span class="material-icons-round" style="font-size:48px; color:var(--ink-faint); margin-bottom:12px;">search_off</span>
+      <p style="font-weight:600; font-size:15px;">No forms found</p>
+      <p style="font-size:12.5px; margin-top:4px; color: var(--ink-faint);">Try searching for a different keyword or category.</p>
+    </div>
+
+    <div class="category-list" id="category-list">
+
+      <!-- Category 1: Registration and Membership -->
+      <div class="category-card" id="cat-registration">
+        <div class="category-header" onclick="toggleCategory('cat-registration')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">person_add</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Registration &amp; Membership</div>
+            <div class="category-meta">Member and Employer Registration Forms</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">10 Forms</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <!-- Member forms -->
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Personal Data Record (E-1)</div>
+              <div class="form-tag">Member Registration</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/E1-Personal-Record.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Member’s Data Change Request (E-4)</div>
+              <div class="form-tag">Member Data Update</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/E4-Member-Data-Change-Request.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Kasambahay Unified Registration Form</div>
+              <div class="form-tag">Domestic Helper Registration</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Unified_Registration_Form_Kasambahay.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Request/Verification Form</div>
+              <div class="form-tag">Verification</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/cov-01205-052015.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Data Privacy Consent Form</div>
+              <div class="form-tag">Privacy Agreement</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2026/05/Data-Privacy-Consent.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <!-- Employer forms -->
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Employer Registration Form (ER-1)</div>
+              <div class="form-tag">Employer Registration</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForms_ER_Registration.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Employment Report (ER-2)</div>
+              <div class="form-tag">Employer Reporting</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForms_Employment_Report.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Employer Data Change Request (ER-4)</div>
+              <div class="form-tag">Employer Update</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForms_ER_Change_Request.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Household Employer Unified Registration Form</div>
+              <div class="form-tag">Household ER Registration</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Unified_Registration_Form_HouseholdER.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Household Employment Unified Report Form</div>
+              <div class="form-tag">Household ER Reporting</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Household_Employment_Report_Form.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 2: Contributions -->
+      <div class="category-card" id="cat-contributions">
+        <div class="category-header" onclick="toggleCategory('cat-contributions')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">payments</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Contributions</div>
+            <div class="category-meta">Payment and Collection Lists</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">5 Forms / Tools</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Contribution Collection List (R-3)</div>
+              <div class="form-tag">Collection Record</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForms_Contribution_Collection_List.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Contributions Payment Return (R-5)</div>
+              <div class="form-tag">Payment Form</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForms_ER_Contribution_Payment.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Miscellaneous Payment Return</div>
+              <div class="form-tag">Other Payments</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Miscellaneous_Payment.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-zip"><span class="material-icons-round">folder_zip</span></div>
+            <div class="form-details">
+              <div class="form-title">R3 File Generator 2023</div>
+              <div class="form-tag">ZIP Utility Software</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/08/R3FileGenerator_2023.zip" download target="_blank" rel="noopener" class="form-download-btn" title="Download ZIP">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-zip"><span class="material-icons-round">folder_zip</span></div>
+            <div class="form-details">
+              <div class="form-title">HHandEELibrary.zip</div>
+              <div class="form-tag">ZIP Library Assets</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2025/01/HHandEELibrary.zip" download target="_blank" rel="noopener" class="form-download-btn" title="Download ZIP">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 3: Member Loans -->
+      <div class="category-card" id="cat-loans">
+        <div class="category-header" onclick="toggleCategory('cat-loans')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">account_balance</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Member Loans</div>
+            <div class="category-meta">Real Estate, Housing &amp; Stock Applications</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">5 Forms</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Real Estate Loan Payment Return</div>
+              <div class="form-tag">Real Estate Return</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_RE_Payment.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Application for Housing Loan</div>
+              <div class="form-tag">Housing Application</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2026/01/mel-01750.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Educational Assistance Loan Program Application</div>
+              <div class="form-tag">Educational Assistance</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/mlp-01338.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Application for Option to Sell Shares of Stock (SILP/PFLP)</div>
+              <div class="form-tag">Stocks Option</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/application_form_option_-to_sell.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Special Power of Attorney - Option to Sell Shares of Stock (SILP/PFLP)</div>
+              <div class="form-tag">Legal SPA Authorization</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2025/05/Option-to-Sell-SPA.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 4: Sickness & Maternity Benefits -->
+      <div class="category-card" id="cat-sickness-maternity">
+        <div class="category-header" onclick="toggleCategory('cat-sickness-maternity')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">volunteer_activism</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Sickness &amp; Maternity Benefits</div>
+            <div class="category-meta">Notification and Claim Reimbursements</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">10 Forms</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Sickness Notification Form (SIC_01252)</div>
+              <div class="form-tag">Sickness Notification</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SIC_01252.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Sickness Reimbursement Form (SIC_01253)</div>
+              <div class="form-tag">Sickness Claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SIC_01253.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Sickness Benefit Application Form (for Unemployed/Self-Employed/Voluntary)</div>
+              <div class="form-tag">Sickness Claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SIC_01250.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Medical Certificate (MED-01688)</div>
+              <div class="form-tag">Doctor's Certificate</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/06/med-01688.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Employer Transmittal List (Sickness Benefit Reimbursement Application)</div>
+              <div class="form-tag">Employer Sickness Transmittal</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SIC_01254.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Affidavit of Undertaking (English) - Sickness</div>
+              <div class="form-tag">Legal Undertaking</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SIC_01247.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Maternity Benefit Application/Maternity Benefit Reimbursement (Special Cases)</div>
+              <div class="form-tag">Maternity Claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/SIC-01842.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Maternity Notification (SIC-01841)</div>
+              <div class="form-tag">Maternity Notification</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/SIC-01841.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Affidavit of Undertaking – Non Receipt of Advance Payment for Sickness/Maternity</div>
+              <div class="form-tag">Maternity Undertaking</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/SIC-01843.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Affidavit of Undertaking – Unclaimed Maternity Benefit of Deceased Member</div>
+              <div class="form-tag">Maternity Undertaking</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/SIC-01844.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 5: Other Benefits -->
+      <div class="category-card" id="cat-other-benefits">
+        <div class="category-header" onclick="toggleCategory('cat-other-benefits')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">star</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Other Benefits (Retirement, Disability, Death, Funeral, EC)</div>
+            <div class="category-meta">Retirement Pension, Funeral, and Disability Claims</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">10 Forms</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Retirement Claim Application</div>
+              <div class="form-tag">Retirement claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Retirement_Claim.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Disability Claim Application</div>
+              <div class="form-tag">Disability claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Disability_Claim.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Employment Data Form (For Disability Claims)</div>
+              <div class="form-tag">Employment Data</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Employment_Data.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Death Claim Application</div>
+              <div class="form-tag">Death claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Death_Claim.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Funeral Claim Application</div>
+              <div class="form-tag">Funeral claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/funeral_claim_application_ret01222.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Affidavit of Funeral Expenses</div>
+              <div class="form-tag">Funeral support</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/11/RET-01925.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Waiver (SS Funeral Benefit)</div>
+              <div class="form-tag">Funeral Waiver</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/11/RET-01926.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Joint Affidavit of Two Disinterested Persons</div>
+              <div class="form-tag">Legal Affidavit</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/11/RET-01927.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">EC Medical Reimbursement Benefit Application</div>
+              <div class="form-tag">Employees' Compensation</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_EC_Medical_Reimbursement.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">EC Accident/Sickness Report</div>
+              <div class="form-tag">Employees' Compensation</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_EC_Accident_Sickness_Report.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 6: Pensioners & Savings Programs -->
+      <div class="category-card" id="cat-pensioners-savings">
+        <div class="category-header" onclick="toggleCategory('cat-pensioners-savings')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">savings</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Pensioners &amp; Savings Programs</div>
+            <div class="category-meta">ACOP Verification, Flexi-Fund &amp; P.E.S.O Fund</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">10 Forms</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Annual Confirmation of Pensioners (Retirement / Total Disability Pensioner)</div>
+              <div class="form-tag">ACOP Verification</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/08/PEN-01966.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Annual Confirmation of Pensioners (Surviving Legal Spouse Pensioner)</div>
+              <div class="form-tag">ACOP Verification</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/08/PEN-01967.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Annual Confirmation of Pensioners (Representative Payee of Dependent Minor/Incapacitated Child)</div>
+              <div class="form-tag">ACOP Verification</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/PEN-01968.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Pensioner’s Data Change Request Form (PEN01439)</div>
+              <div class="form-tag">Pensioner Update</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/Pensioners-Data-Change-PEN01439.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Flexi Fund Program Early Withdrawal Claim Form</div>
+              <div class="form-tag">Flexi Fund Claim</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/SSSForm_Early_Withdrawal_FlexiFund.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">SSS P.E.S.O. Fund Amendment Form</div>
+              <div class="form-tag">P.E.S.O. Fund</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2024/10/PESO-Fund-Amendment-Form.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">SSS P.E.S.O. Fund Withdrawal Form (VPF_01296)</div>
+              <div class="form-tag">P.E.S.O. Fund</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/vpf_01296.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">SSS P.E.S.O. Fund Retirement Benefit Claim Form (VPF_01297)</div>
+              <div class="form-tag">P.E.S.O. Fund</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/vpf_01297.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">SSS P.E.S.O. Fund Total Disability Benefit Claim Form (VPF_01298)</div>
+              <div class="form-tag">P.E.S.O. Fund</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/vpf_01298.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">SSS P.E.S.O. Fund Death Benefit Claim Form (VPF_01299)</div>
+              <div class="form-tag">P.E.S.O. Fund</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/vpf_01299.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 7: Others & Member Concerns -->
+      <div class="category-card" id="cat-others">
+        <div class="category-header" onclick="toggleCategory('cat-others')" role="button" tabindex="0" aria-expanded="false">
+          <div class="category-icon-box">
+            <span class="material-icons-round">support_agent</span>
+          </div>
+          <div class="category-title-area">
+            <div class="category-title">Others &amp; Member Concerns</div>
+            <div class="category-meta">FOI, Sinumpaang Salaysay and Specimen Forms</div>
+          </div>
+          <div style="margin-right:8px;"><span class="form-count-badge">8 Forms</span></div>
+          <div class="category-chevron"><span class="material-icons-round">expand_more</span></div>
+        </div>
+        <div class="category-body">
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">FOI Request Form</div>
+              <div class="form-tag">Freedom of Information</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/FOI_Request_Form.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Tagalog Sinumpaang Salaysay For Authorized Representative (MCA-01620)</div>
+              <div class="form-tag">Affidavit Tagalog</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/mca-01620.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Tagalog Sinumpaang Salaysay para sa Miyembro (MCA-01619)</div>
+              <div class="form-tag">Affidavit Tagalog</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/mca-01619.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">English Sinumpaang Salaysay For Authorized Representative (MCA-01618)</div>
+              <div class="form-tag">Affidavit English</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/mca-01618.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">English Sinumpaang Salaysay (MCA-01617)</div>
+              <div class="form-tag">Affidavit English</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/mca-01617.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Customer Information Form (MCA-01616)</div>
+              <div class="form-tag">Customer info</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2022/03/mca-01616.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Personal Data Sheet</div>
+              <div class="form-tag">Personal info</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2026/06/fra-01683.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+          <div class="form-row">
+            <div class="form-icon-pdf"><span class="material-icons-round">picture_as_pdf</span></div>
+            <div class="form-details">
+              <div class="form-title">Specimen Signature Form</div>
+              <div class="form-tag">Specimen Signature</div>
+            </div>
+            <a href="https://www.sss.gov.ph/wp-content/uploads/2026/06/fra-01684.pdf" target="_blank" rel="noopener" class="form-download-btn" title="Download PDF">
+              <span class="material-icons-round">download</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end category-list -->
+
+  </div><!-- end scroll-container -->
+
+  <!-- BOTTOM NAV — shared via nav.js -->
+  <div id="shared-bottom-nav"></div>
+  <script src="nav.js"></script>
+
+  <!-- NAVIGATION OVERLAY -->
+  <div id="nav-overlay" aria-hidden="true">
+    <div id="overlay-anim" style="width:80px;height:80px;"></div>
+  </div>
+
+  <script>
+    /* ── Theme (delegated to topbar.js) ── */
+    function toggleDark() {
+      if (typeof topbarToggleDark === 'function') topbarToggleDark();
+    }
+
+    /* ── Navigation ── */
+    function go(page) {
+      var overlay = document.getElementById('nav-overlay');
+      if (overlay) overlay.classList.add('show');
+      setTimeout(function () { window.location.href = page; }, 350);
+    }
+
+    window.addEventListener('beforeunload', function () {
+      var overlay = document.getElementById('nav-overlay');
+      if (overlay) overlay.classList.add('show');
+    });
+
+    /* ── Accordion / toggle category cards ── */
+    function toggleCategory(cardId) {
+      var card = document.getElementById(cardId);
+      var isExpanded = card.classList.contains('expanded');
+
+      if (isExpanded) {
+        card.classList.remove('expanded');
+        var hdr = card.querySelector('.category-header');
+        if (hdr) hdr.setAttribute('aria-expanded', 'false');
+      } else {
+        card.classList.add('expanded');
+        var hdr = card.querySelector('.category-header');
+        if (hdr) hdr.setAttribute('aria-expanded', 'true');
+        
+        // Scroll card into view
+        setTimeout(function () {
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 150);
+      }
+    }
+
+    /* ── Filter forms function ── */
+    function filterForms() {
+      var query = document.getElementById('forms-search').value.toLowerCase().trim();
+      var clearBtn = document.getElementById('search-clear');
+      
+      if (query.length > 0) {
+        clearBtn.style.display = 'block';
+      } else {
+        clearBtn.style.display = 'none';
+      }
+
+      var cards = document.querySelectorAll('.category-card');
+      var totalVisibleForms = 0;
+
+      cards.forEach(function (card) {
+        var rows = card.querySelectorAll('.form-row');
+        var cardHasMatch = false;
+
+        rows.forEach(function (row) {
+          var title = row.querySelector('.form-title').textContent.toLowerCase();
+          var tag = row.querySelector('.form-tag').textContent.toLowerCase();
+          var isMatch = title.includes(query) || tag.includes(query);
+
+          if (isMatch) {
+            row.style.display = 'flex';
+            cardHasMatch = true;
+            totalVisibleForms++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        if (cardHasMatch) {
+          card.style.display = 'block';
+          // Auto-expand card if user is searching, collapse to user's choice otherwise
+          if (query.length > 0) {
+            card.classList.add('expanded');
+            var hdr = card.querySelector('.category-header');
+            if (hdr) hdr.setAttribute('aria-expanded', 'true');
+          }
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show/hide no results message
+      var noResults = document.getElementById('no-results');
+      var sectionHeader = document.getElementById('section-categories-header');
+      if (totalVisibleForms === 0 && query.length > 0) {
+        noResults.style.display = 'block';
+        if (sectionHeader) sectionHeader.style.display = 'none';
+      } else {
+        noResults.style.display = 'none';
+        if (sectionHeader) sectionHeader.style.display = 'flex';
+      }
+
+      // If search query is cleared, collapse all cards except user's choices
+      if (query.length === 0) {
+        cards.forEach(function (card) {
+          card.style.display = 'block';
+          card.classList.remove('expanded');
+          var hdr = card.querySelector('.category-header');
+          if (hdr) hdr.setAttribute('aria-expanded', 'false');
+        });
+      }
+    }
+
+    /* ── Clear search ── */
+    function clearSearch() {
+      var searchInput = document.getElementById('forms-search');
+      searchInput.value = '';
+      filterForms();
+      searchInput.focus();
+    }
+  </script>
+
+</body>
+
+</html>
